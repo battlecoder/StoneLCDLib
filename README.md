@@ -52,8 +52,7 @@ The current functions are meant to be used to work with the LCD registers:
 
 These should be sufficient to set or retrieve LCD parameters, and control features like media playback, Touchscreen, RTC clock, etc.
 
-*StoneLCDLib.h* also contains definitions for the addresses of most registers (e.g: STONE_REG_TP_STATUS, STONE_REG_RUNTIME, STONE_REG_VOL, etc), but the list of addresses is currently incomplete.
-
+*StoneLCDLib.h* also contains definitions for the addresses of most registers (e.g: STONE_REG_TP_STATUS, STONE_REG_RUNTIME, STONE_REG_VOL, etc). Check the file for a list of available constants.
 
 ### 3. Reading / Writing Variables
 User variables can be accessed through the following methods.
