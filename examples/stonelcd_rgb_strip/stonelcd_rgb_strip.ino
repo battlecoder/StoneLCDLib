@@ -34,8 +34,6 @@
  *############################################################################*/
  /* Pin assignment *******************************/
 #define LED_PIN               9
-#define LCD_RX                4
-#define LCD_TX                5
 
  /* Buttons and Labels IDs ***********************/
 #define BTTN_ONOFF            0x0001

@@ -13,9 +13,8 @@ This library currently has the following features:
 The following is a short list of pending work:
 * Support for CRC checks
 * Functions to use the graph/curve buffer
-* [*] High level functions for audio/video playback
+* [*] High level functions for video playback
 * [*] High level functions for reading touchscreen data
-* [*] High level functions for Page switching
 
 With the exception of the first two items, all of the remaining features are controlled by LCD registers, so they can be performed with the already existing functions in this library. I hope, however, to add more methods especifically designed to access those features in a friendlier way.
 
@@ -42,7 +41,7 @@ StoneLCD myLCD(&Serial, 0xA5, 0x5A);
 ```
 
 ### 2. Reading / Writing LCD Registers
-The current functions are meant to be used to work with the LCD registers:
+The current functions are used to work with the LCD registers:
 * writeRegister (regStartAddr, *buffer, buffLen)
 * writeRegisterByte (regStartAddr, b)
 * writeRegisterWord (regStartAddr, w)
@@ -52,13 +51,27 @@ The current functions are meant to be used to work with the LCD registers:
 
 These should be sufficient to set or retrieve LCD parameters, and control features like media playback, Touchscreen, RTC clock, etc.
 
-*StoneLCDLib.h* also contains definitions for the addresses of most registers (e.g: STONE_REG_TP_STATUS, STONE_REG_RUNTIME, STONE_REG_VOL, etc). Check the file for a list of available constants.
+*StoneLCDLib.h* also contains definitions for the addresses of all registers (e.g: STONE_REG_TP_STATUS, STONE_REG_RUNTIME, STONE_REG_VOL, etc). Check the file for a list of available constants.
 
 ### 3. Reading / Writing Variables
-User variables can be accessed through the following methods.
+User variables can be accessed through the following methods:
+* writeVariable (varStartAddr, *buffer, buffLen)
+* writeVariableWord (varStartAddr, w)
+* readVariable (varStartAddr, *dest_buffer, buffLen)
+* readVariableWord (varStartAddr)
 
+### 4. Current Page (Picture)
+The current Page picture can be queried or set with:
+* setCurrentPage (picId)
+* getCurrentPage()
 
-### 4. RTC
+### 4. Audio
+The current functions for audio are implemented:
+* playSound(soundId, volume)
+* stopSound(soundId)
+* getSoundPlaybackStatus()
+
+### 6. RTC
 You can access the RTC through the registers directly, but this library provides an abstraction class plus read/write methods so you can handle the RTC Date/Time data easily.
 
 Methods:
@@ -81,7 +94,7 @@ The *StoneLCDDateTime* provides the following functionality:
 * setMinutes(m)
 * setSeconds(s)
 
-### 5. Receiving events from the screen
+### 7. Receiving events from the screen
 
 Make sure that you are constantly calling *checkForIOEvents()* somewhere in your main loop.
 When you call this function you'll need to specify a buffer for the event data, and a pointer to a StoneLCDEvent object that will receive the basic event information, like this:
@@ -92,4 +105,12 @@ uint16_t recvBuffer[8];
 boolean recvEvent;
 
 recvEvent = myLCD.checkForIOEvent(&evt, recvBuffer, 8);
+```
+For the time being the StoneLCDEvent structure has the following definition:
+```
+typedef struct {
+  uint8_t cmd;      // Command type. Normally a variable operation.
+  uint16_t address; // Variable address or element Id associated to the event
+  uint8_t dataLen;  // Length of data received (and written to the provided buffer)
+} StoneLCDEvent;
 ```

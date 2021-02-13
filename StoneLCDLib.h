@@ -70,26 +70,26 @@
 #define STONE_REG_VOL_ADJ_EN            0x53 // 0x5A = Apply adjustment
 #define STONE_REG_VOL                   0x54 // Range: 0x00 - 0x40
 #define STONE_REG_VOL_STATUS            0x55 // 0x00 = Stop, 0x01 = Play
-#define STONE_REG_EN_DBL_OP				0x56 // 0x5A = Apply DB operation
-#define STONE_REG_DBL_OP_MODE			0x57 // 0x50 = write, 0xA0 = read
-#define STONE_REG_DBL_ADDRESS			0x58 // 4 bytes
+#define STONE_REG_EN_DBL_OP             0x56 // 0x5A = Apply DB operation
+#define STONE_REG_DBL_OP_MODE           0x57 // 0x50 = write, 0xA0 = read
+#define STONE_REG_DBL_ADDRESS           0x58 // 4 bytes
 #define STONE_REG_DBL_VP                0x5C // 2 bytes
 #define STONE_REG_DBL_OP_LENGTH         0x5E // 2 bytes
-#define STONE_REG_PLAY_AVI_SET			0x60 // 0x5A = apply video operation.
-#define STONE_REG_PLAY_AVI_TYPE		    0x61 // 0x00 = Single(LCD), 0x01 = Single(USB Flash), 0x02 = Seq(LCD), 0x03 = Seq(USB)?
+#define STONE_REG_PLAY_AVI_SET          0x60 // 0x5A = apply video operation.
+#define STONE_REG_PLAY_AVI_TYPE         0x61 // 0x00 = Single(LCD), 0x01 = Single(USB Flash), 0x02 = Seq(LCD), 0x03 = Seq(USB)?
 #define STONE_REG_PLAY_POSITION_X       0x62 // 2 bytes
 #define STONE_REG_PLAY_POSITION_Y       0x64 // 2 bytes
 #define STONE_REG_PLAY_AVI_NUM          0x66 // 2 bytes. Only usef for single play.
-#define STONE_REG_VOL_ADJ_EN			0x68 // 0x5A = Adjust volume
+#define STONE_REG_VOL_ADJ_EN            0x68 // 0x5A = Adjust volume
 #define STONE_REG_VOL                   0x69 // Range: 0x00 - 0x3F (Default)
 #define STONE_REG_PLAY_CONTROL          0x6A // 0x5A = Play / Pause
 #define STONE_REG_PLAY_STOP             0x6B // 0x5A = Stop
-#define STONE_REG_PLAY_NEXT				0x6C // 0x5A = Play next. Ends with single play.
-#define STONE_REG_PLAY_STATUS			0x6D // 0x00 = IDLE, 0x01 = Playing, 0x02 = Paused
-#define STONE_REG_SCAN_STATUS			0xE9 // Read: 0x00 = Touch screen not scanning. 0x01 = touch screen scanning?. Write 0x00 to force exit.
-#define STONE_REG_TPCAL_TRIGGER		    0xEA // 0x5A = Start Touch Screen calibration.
-#define STONE_REG_TRENDLINE_CLEAR		0xEB // 0x55 = Clear all 8 curve buffers, 0x56-0x5D = curve channel to clear (0-7)
-#define STONE_REG_RESET_TRIGGER			0xEE // 2 bytes: Write 0x5AA5 to reset the screen.
+#define STONE_REG_PLAY_NEXT             0x6C // 0x5A = Play next. Ends with single play.
+#define STONE_REG_PLAY_STATUS           0x6D // 0x00 = IDLE, 0x01 = Playing, 0x02 = Paused
+#define STONE_REG_SCAN_STATUS           0xE9 // Read: 0x00 = Touch screen not scanning. 0x01 = touch screen scanning?. Write 0x00 to force exit.
+#define STONE_REG_TPCAL_TRIGGER         0xEA // 0x5A = Start Touch Screen calibration.
+#define STONE_REG_TRENDLINE_CLEAR       0xEB // 0x55 = Clear all 8 curve buffers, 0x56-0x5D = curve channel to clear (0-7)
+#define STONE_REG_RESET_TRIGGER         0xEE // 2 bytes: Write 0x5AA5 to reset the screen.
 
 /*############################################################################
  *##                                                                        ##
@@ -188,6 +188,15 @@ public:
   // RTC functions ***************
   boolean getRTC(StoneLCDDateTime *dst);
   boolean setRTC(StoneLCDDateTime *src);
+  
+  // Page/Pic functions ***********
+  boolean setCurrentPage(uint16_t picId);
+  uint16_t getCurrentPage();
+  
+  // Sound functions *************
+  boolean playSound(uint16_t soundId, uint8_t volume);
+  boolean stopSound(uint16_t soundId);
+  uint8_t getSoundPlaybackStatus();
 
   // I/O Stream functions ********
   boolean checkForIOEvent(StoneLCDEvent *dst, uint16_t *dataDest, uint8_t maxLen);

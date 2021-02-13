@@ -368,6 +368,41 @@ uint16_t StoneLCD::readVariableWord(uint16_t varStartAddr) {
 }
 
 // ****************************************************
+// ** "Page" Methods
+// ****************************************************
+boolean StoneLCD::setCurrentPage(uint16_t picId) {
+  return writeRegisterWord(STONE_REG_PIC_ID, picId);
+}
+
+uint16_t StoneLCD::getCurrentPage() {
+  return readRegisterWord(STONE_REG_PIC_ID);
+}
+
+// ****************************************************
+// ** "Sound" Methods
+// ****************************************************
+boolean StoneLCD::playSound(uint16_t soundId, uint8_t volume) {
+  uint8_t dataBuffer[5];
+  dataBuffer[0] = 0x5B;           // Play
+  dataBuffer[1] = soundId >> 8;   // ID
+  dataBuffer[2] = soundId & 0xff; // ID
+  dataBuffer[3] = 0x54;           // Apply Volume
+  dataBuffer[4] = volume;         // Volume
+  return writeRegister(STONE_REG_MUSIC_SET, dataBuffer, 5);
+}
+
+boolean StoneLCD::stopSound(uint16_t soundId) {
+  uint8_t dataBuffer[3];
+  dataBuffer[0] = 0x5C;           // Stop
+  dataBuffer[1] = soundId >> 8;   // ID
+  dataBuffer[2] = soundId & 0xff; // ID
+  return writeRegister(STONE_REG_MUSIC_SET, dataBuffer, 3);
+}
+
+uint8_t StoneLCD::getSoundPlaybackStatus() {
+  return readRegisterByte(STONE_REG_VOL_STATUS);
+}
+// ****************************************************
 // ** "RTC" Methods
 // ****************************************************
 boolean StoneLCD::getRTC(StoneLCDDateTime *dst) {
